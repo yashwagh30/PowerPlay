@@ -154,4 +154,4 @@ aws logs put-log-events \
 
 ---
  
-— Yash Wagh_
+— Yash Wagh
