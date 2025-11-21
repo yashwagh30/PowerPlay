@@ -1,4 +1,4 @@
-# DevOps Intern Assignment – AWS Infra, Nginx, Monitoring & CloudWatch
+# DevOps Intern Assignment – PowerPlay
 
 
 ## 🟢 Part 1: Environment Setup
@@ -8,7 +8,7 @@
 - Spin up a **t3.micro Ubuntu Server 22.04 LTS** on AWS EC2.
 - Create a new key pair, and configure SSH access.
   
-  > _Handy Tip:_ Use an **SSH Agent** for safe private key handling!
+  Used an **SSH Agent** for safe private key handling!
 
 ### 2️⃣ User Creation & Sudo Setup
 
@@ -31,6 +31,7 @@
   ```
 
 #### 🔍 Deliverables:
+- Attached in Part 1 Directory
 - `hostname` output, `/etc/passwd` entry for `devops_intern`
 - Output of `sudo whoami` as the new user
 
@@ -67,6 +68,7 @@ sudo systemctl restart nginx
 ```
 
 #### 🔍 Deliverables:
+- Attached in Part 2 Directory
 - Screenshot of your webpage – view it at your EC2 public IP!
 
 ---
@@ -107,6 +109,7 @@ sudo crontab -e
 ```
 
 #### 🔍 Deliverables:
+- Attached in Part 3 Directory
 - Screenshot of `crontab` configuration
 - `system_report.log` with *at least two* entries
 
