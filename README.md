@@ -7,6 +7,7 @@
 
 - Spin up a **t3.micro Ubuntu Server 22.04 LTS** on AWS EC2.
 - Create a new key pair, and configure SSH access.
+- We can even use Terraform to provisioning of resources to avoid any personal error.
   
   Used an **SSH Agent** for safe private key handling!
 
