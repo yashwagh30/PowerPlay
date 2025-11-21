@@ -36,9 +36,9 @@
 - `hostname` output, `/etc/passwd` entry for `devops_intern`
 - Output of `sudo whoami` as the new user
 
-![My Screenshot](Part_1/Screenshot 2025-11-20 214659.png)
-![My Screenshot](Part_1/Screenshot 2025-11-20 215258.png)
-![My Screenshot](Part_1/Screenshot 2025-11-20 215326.png)
+![My Screenshot](Part_1/hostname.png)
+![My Screenshot](Part_1/newuser.png)
+![My Screenshot](Part_1/whoami.png)
 
 ---
 
@@ -76,11 +76,10 @@ sudo systemctl restart nginx
 - Attached in Part 2 Directory
 - Screenshot of your webpage – view it at your EC2 public IP!
 
-![My Screenshot](Part_2/Screenshot 2025-11-20 222537.png)
-![My Screenshot](Part_2/Screenshot 2025-11-20 222601.png)
-![My Screenshot](Part_2/Screenshot 2025-11-20 222622.png)
-![My Screenshot](Part_2/Screenshot 2025-11-20 222638.png)
-![My Screenshot](Part_2/Screenshot 2025-11-20 222035.png)
+![My Screenshot](Part_2/indexfile.png)
+![My Screenshot](Part_2/nginxinstall.png)
+![My Screenshot](Part_2/startnginx.png)
+![My Screenshot](Part_2/htmlpage.png)
 
 ---
 
@@ -124,9 +123,9 @@ sudo crontab -e
 - Screenshot of `crontab` configuration
 - `system_report.log` with *at least two* entries
 
-![My Screenshot](Part_3/Screenshot 2025-11-20 233605.png)
-![My Screenshot](Part_3/Screenshot 2025-11-21 095916.png)
-![My Screenshot](Part_3/Screenshot 2025-11-20 233619.png)
+![My Screenshot](Part_3/addedfile.png)
+![My Screenshot](Part_3/report.png)
+![My Screenshot](Part_3/systemreport.png)
 
 ---
 
@@ -166,10 +165,10 @@ aws logs put-log-events \
     --log-events file://clean-array.json
 ```
 
-![My Screenshot](Part_4/Screenshot 2025-11-21 072800.png)
-![My Screenshot](Part_4/Screenshot 2025-11-21 072815.png)
-![My Screenshot](Part_4/Screenshot 2025-11-21 072716.png)
-![My Screenshot](Part_4/Screenshot 2025-11-21 072701.png)
+![My Screenshot](Part_4/clicommand.png)
+![My Screenshot](Part_4/clicommands.png)
+![My Screenshot](Part_4/loggroups.png)
+![My Screenshot](Part_4/logevents.png)
 
 ---
  
