@@ -1,47 +1,55 @@
-PART 1 — Environment Setup
-1. Launched EC2 Instance
+Part 1: Environment Setup
+1. EC2 Instance
 
-Instance type: t3.micro (free tier)
+A t3.micro Ubuntu Server 22.04 LTS instance was launched using the AWS EC2 dashboard. A key pair was created for SSH access.
 
-AMI: Ubuntu Server 22.04 LTS
+2. User Creation
 
-Region: (your-region)
+A new user named devops_intern was created using the following command:
 
-2. Created a new user
 sudo adduser devops_intern
 
-3. Added passwordless sudo
+3. Passwordless Sudo Access
 
-Edited sudoers file:
+The sudoers file was updated:
 
 sudo visudo
 
 
-Added:
+The line below was added to allow passwordless sudo:
 
 devops_intern ALL=(ALL) NOPASSWD:ALL
 
-4. Changed hostname
+4. Hostname Update
+
+The server hostname was changed to include my name:
+
 sudo hostnamectl set-hostname yash-devops
 
 Deliverables
 
-Screenshot of:
+The screenshots include:
 
-hostname
+Output of hostname
 
-/etc/passwd showing devops_intern
+The devops_intern entry from /etc/passwd
 
-Output of sudo whoami as devops_intern
+Output of sudo whoami when run as the new user
 
-PART 2 — Simple Web Service Setup
-1. Installed NGINX
+Part 2: Simple Web Service Setup
+1. Installing Nginx
+
+Nginx was installed and enabled:
+
 sudo apt update
 sudo apt install nginx -y
+sudo systemctl enable nginx
+sudo systemctl start nginx
 
-2. Created HTML page
+2. HTML Page Setup
 
-Path: /var/www/html/index.html
+A simple HTML page was placed at /var/www/html/index.html.
+It displays my name, the EC2 instance ID (fetched from metadata), and the server uptime.
 
 <html>
 <body>
@@ -52,21 +60,21 @@ Path: /var/www/html/index.html
 </html>
 
 
-Restarted NGINX:
+Nginx was restarted:
 
 sudo systemctl restart nginx
 
-3. Deliverable
+Deliverable
 
-Screenshot of webpage from EC2 public IP
+A screenshot of the webpage accessed using the instance's public IP.
 
-PART 3 — Monitoring Script
-1. Script
+Part 3: Monitoring Script
+1. System Report Script
 
-File: /usr/local/bin/system_report.sh
+A script named system_report.sh was created at /usr/local/bin/system_report.sh:
 
 #!/bin/bash
-echo "----- System Report ------"
+echo "===== System Report ====="
 echo "Date: $(date)"
 echo "Uptime: $(uptime -p)"
 echo "CPU Usage: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}')%"
@@ -74,15 +82,18 @@ echo "Memory Usage: $(free | awk '/Mem/ {printf(\"%.2f\", $3/$2 * 100)}')%"
 echo "Disk Usage: $(df -h / | awk 'NR==2 {print $5}')"
 echo "Top 3 Processes by CPU:"
 ps -eo pid,ppid,cmd,%cpu --sort=-%cpu | head -n 4
-echo "---------------------"
+echo "========================="
 echo
 
 
-Made executable:
+The script was made executable:
 
 sudo chmod +x /usr/local/bin/system_report.sh
 
 2. Cron Job
+
+A cron job was created for the root user to run the script every five minutes:
+
 sudo crontab -e
 
 
@@ -90,32 +101,44 @@ Cron entry:
 
 */5 * * * * /usr/local/bin/system_report.sh >> /var/log/system_report.log 2>&1
 
-3. Deliverables
+Deliverables
 
-Cron configuration screenshot
+Screenshot of the cron entry
 
-Screenshot of /var/log/system_report.log with entries
+Screenshot showing multiple log entries inside /var/log/system_report.log
 
-PART 4 — AWS CloudWatch Integration
-1. Created log group
+Part 4: AWS CloudWatch Integration
+1. AWS CLI Setup
+
+AWS CLI v2 was installed manually using the official installer.
+The CLI was configured using:
+
+aws configure
+
+2. CloudWatch Log Group and Stream
+
+A log group and log stream were created:
+
 aws logs create-log-group --log-group-name /devops/intern-metrics
 
-2. Created log stream
 aws logs create-log-stream \
 --log-group-name /devops/intern-metrics \
 --log-stream-name intern-stream
 
-3. Generated clean log events JSON
+3. Preparing Log Events
+
+System log entries were converted into a CloudWatch-compatible JSON array:
+
 awk 'NF { printf("{\"timestamp\": %d000, \"message\": \"%s\"}\n", systime(), $0); }' /var/log/system_report.log > clean-events.json
-
-
-Converted to JSON array:
 
 echo "[" > clean-array.json
 sed '$!s/$/,/' clean-events.json >> clean-array.json
 echo "]" >> clean-array.json
 
-4. Uploaded logs
+4. Upload to CloudWatch
+
+The JSON log events were uploaded using:
+
 aws logs put-log-events \
 --log-group-name /devops/intern-metrics \
 --log-stream-name intern-stream \
