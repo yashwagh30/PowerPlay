@@ -1,78 +1,83 @@
-Part 1: Environment Setup
-1. EC2 Instance
-
-A t3.micro Ubuntu Server 22.04 LTS instance was launched using the AWS EC2 dashboard. A key pair was created for SSH access.
-
-2. User Creation
-
-A new user named devops_intern was created using the following command:
-
-sudo adduser devops_intern
-
-3. Passwordless Sudo Access
-
-The sudoers file was updated:
-
-sudo visudo
+# DevOps Intern Assignment – AWS Infra, Nginx, Monitoring & CloudWatch
 
 
-The line below was added to allow passwordless sudo:
+## 🟢 Part 1: Environment Setup
 
-devops_intern ALL=(ALL) NOPASSWD:ALL
+### 1️⃣ EC2 Instance Provisioning
 
-4. Hostname Update
+- Spin up a **t3.micro Ubuntu Server 22.04 LTS** on AWS EC2.
+- Create a new key pair, and configure SSH access.
+  
+  > _Handy Tip:_ Use an **SSH Agent** for safe private key handling!
 
-The server hostname was changed to include my name:
+### 2️⃣ User Creation & Sudo Setup
 
-sudo hostnamectl set-hostname yash-devops
+- Create a dedicated Linux user:
+  ```bash
+  sudo adduser devops_intern
+  ```
+- Grant **passwordless `sudo` access**:
+  ```bash
+  sudo visudo
+  # Add this line:
+  devops_intern ALL=(ALL) NOPASSWD:ALL
+  ```
 
-Deliverables
+### 3️⃣ Hostname Customization
 
-The screenshots include:
+- Personalize your host for clarity:
+  ```bash
+  sudo hostnamectl set-hostname yash-devops
+  ```
 
-Output of hostname
+#### 🔍 Deliverables:
+- `hostname` output, `/etc/passwd` entry for `devops_intern`
+- Output of `sudo whoami` as the new user
 
-The devops_intern entry from /etc/passwd
+---
 
-Output of sudo whoami when run as the new user
+## 🟢 Part 2: Simple Web Service Setup
 
-Part 2: Simple Web Service Setup
-1. Installing Nginx
+### 1️⃣ Nginx Installation & Startup
 
-Nginx was installed and enabled:
-
+```bash
 sudo apt update
 sudo apt install nginx -y
 sudo systemctl enable nginx
 sudo systemctl start nginx
+```
 
-2. HTML Page Setup
+### 2️⃣ Custom HTML Webpage
 
-A simple HTML page was placed at /var/www/html/index.html.
-It displays my name, the EC2 instance ID (fetched from metadata), and the server uptime.
+Place this in `/var/www/html/index.html`:
 
+```html
 <html>
 <body>
-<h1>Name: Yash Wagh</h1>
-<h2>Instance ID: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</h2>
-<h3>Uptime: $(uptime -p)</h3>
+  <h1>Name: Yash Wagh</h1>
+  <h2>Instance ID: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</h2>
+  <h3>Uptime: $(uptime -p)</h3>
 </body>
 </html>
+```
 
-
-Nginx was restarted:
-
+> **Restart Nginx** to serve your page:
+```bash
 sudo systemctl restart nginx
+```
 
-Deliverable
+#### 🔍 Deliverables:
+- Screenshot of your webpage – view it at your EC2 public IP!
 
-A screenshot of the webpage accessed using the instance's public IP.
+---
 
-Part 3: Monitoring Script
-1. System Report Script
+## 🟢 Part 3: Monitoring Automation
 
-A script named system_report.sh was created at /usr/local/bin/system_report.sh:
+### 1️⃣ System Monitoring Script
 
+Create `/usr/local/bin/system_report.sh`:
+
+```bash
 #!/bin/bash
 echo "===== System Report ====="
 echo "Date: $(date)"
@@ -84,62 +89,65 @@ echo "Top 3 Processes by CPU:"
 ps -eo pid,ppid,cmd,%cpu --sort=-%cpu | head -n 4
 echo "========================="
 echo
+```
 
+Set executable permissions:
 
-The script was made executable:
-
+```bash
 sudo chmod +x /usr/local/bin/system_report.sh
+```
 
-2. Cron Job
+### 2️⃣ Cron Job Setup
 
-A cron job was created for the root user to run the script every five minutes:
-
+Run every 5 minutes – edit as root:
+```bash
 sudo crontab -e
-
-
-Cron entry:
-
+# Add this line:
 */5 * * * * /usr/local/bin/system_report.sh >> /var/log/system_report.log 2>&1
+```
 
-Deliverables
+#### 🔍 Deliverables:
+- Screenshot of `crontab` configuration
+- `system_report.log` with *at least two* entries
 
-Screenshot of the cron entry
+---
 
-Screenshot showing multiple log entries inside /var/log/system_report.log
+## 🟢 Part 4: AWS CloudWatch Integration
 
-Part 4: AWS CloudWatch Integration
-1. AWS CLI Setup
+### 1️⃣ AWS CLI Configuration
 
-AWS CLI v2 was installed manually using the official installer.
-The CLI was configured using:
-
+Set up CLI and credentials:
+```bash
 aws configure
+```
 
-2. CloudWatch Log Group and Stream
+### 2️⃣ Create Log Group & Stream
 
-A log group and log stream were created:
-
+```bash
 aws logs create-log-group --log-group-name /devops/intern-metrics
+aws logs create-log-stream --log-group-name /devops/intern-metrics --log-stream-name intern-stream
+```
 
-aws logs create-log-stream \
---log-group-name /devops/intern-metrics \
---log-stream-name intern-stream
+### 3️⃣ Convert Logs to CloudWatch JSON
 
-3. Preparing Log Events
-
-System log entries were converted into a CloudWatch-compatible JSON array:
-
-awk 'NF { printf("{\"timestamp\": %d000, \"message\": \"%s\"}\n", systime(), $0); }' /var/log/system_report.log > clean-events.json
+```bash
+awk 'NF { printf("{\"timestamp\": %d000, \"message\": \"%s\"}\n", systime(), $0); }' \
+   /var/log/system_report.log > clean-events.json
 
 echo "[" > clean-array.json
 sed '$!s/$/,/' clean-events.json >> clean-array.json
 echo "]" >> clean-array.json
+```
 
-4. Upload to CloudWatch
+### 4️⃣ Upload Log Events
 
-The JSON log events were uploaded using:
-
+```bash
 aws logs put-log-events \
---log-group-name /devops/intern-metrics \
---log-stream-name intern-stream \
---log-events file://clean-array.json
+    --log-group-name /devops/intern-metrics \
+    --log-stream-name intern-stream \
+    --log-events file://clean-array.json
+```
+
+---
+ 
+— Yash Wagh_
