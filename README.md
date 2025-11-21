@@ -1,6 +1,5 @@
 # DevOps Intern Assignment – PowerPlay
 
-
 ## 🟢 Part 1: Environment Setup
 
 ### 1️⃣ EC2 Instance Provisioning
@@ -32,13 +31,13 @@
   ```
 
 #### 🔍 Deliverables:
-- Attached in Part 1 Directory
+- Attached in Part_1 Directory
 - `hostname` output, `/etc/passwd` entry for `devops_intern`
 - Output of `sudo whoami` as the new user
 
-![My Screenshot](Part 1/Screenshot 2025-11-20 214659.png)
-![My Screenshot](Part 1/Screenshot 2025-11-20 215258.png)
-![My Screenshot](Part 1/Screenshot 2025-11-20 215326.png)
+![My Screenshot](Part_1/Screenshot_2025-11-20_214659.png)
+![My Screenshot](Part_1/Screenshot_2025-11-20_215258.png)
+![My Screenshot](Part_1/Screenshot_2025-11-20_215326.png)
 
 ---
 
@@ -73,14 +72,14 @@ sudo systemctl restart nginx
 ```
 
 #### 🔍 Deliverables:
-- Attached in Part 2 Directory
+- Attached in Part_2 Directory
 - Screenshot of your webpage – view it at your EC2 public IP!
 
-![My Screenshot](Part 2/Screenshot 2025-11-20 222537.png)
-![My Screenshot](Part 2/Screenshot 2025-11-20 222601.png)
-![My Screenshot](Part 2/Screenshot 2025-11-20 222622.png)
-![My Screenshot](Part 2/Screenshot 2025-11-20 222638.png)
-![My Screenshot](Part 2/Screenshot 2025-11-20 222035.png)
+![My Screenshot](Part_2/Screenshot_2025-11-20_222537.png)
+![My Screenshot](Part_2/Screenshot_2025-11-20_222601.png)
+![My Screenshot](Part_2/Screenshot_2025-11-20_222622.png)
+![My Screenshot](Part_2/Screenshot_2025-11-20_222638.png)
+![My Screenshot](Part_2/Screenshot_2025-11-20_222035.png)
 
 ---
 
@@ -120,13 +119,13 @@ sudo crontab -e
 ```
 
 #### 🔍 Deliverables:
-- Attached in Part 3 Directory
+- Attached in Part_3 Directory
 - Screenshot of `crontab` configuration
 - `system_report.log` with *at least two* entries
 
-![My Screenshot](Part 3/Screenshot 2025-11-20 233605.png)
-![My Screenshot](Part 3/Screenshot 2025-11-21 095916.png)
-![My Screenshot](Part 3/Screenshot 2025-11-20 233619.png)
+![My Screenshot](Part_3/Screenshot_2025-11-20_233605.png)
+![My Screenshot](Part_3/Screenshot_2025-11-21_095916.png)
+![My Screenshot](Part_3/Screenshot_2025-11-20_233619.png)
 
 ---
 
@@ -166,11 +165,11 @@ aws logs put-log-events \
     --log-events file://clean-array.json
 ```
 
-![My Screenshot](Part 4/Screenshot 2025-11-21 072800.png)
-![My Screenshot](Part 4/Screenshot 2025-11-21 072815.png)
-![My Screenshot](Part 4/Screenshot 2025-11-21 072716.png)
-![My Screenshot](Part 4/Screenshot 2025-11-21 072701.png)
+![My Screenshot](Part_4/Screenshot_2025-11-21_072800.png)
+![My Screenshot](Part_4/Screenshot_2025-11-21_072815.png)
+![My Screenshot](Part_4/Screenshot_2025-11-21_072716.png)
+![My Screenshot](Part_4/Screenshot_2025-11-21_072701.png)
 
 ---
- 
+
 — Yash Wagh
